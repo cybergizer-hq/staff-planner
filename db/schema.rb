@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 2020_02_11_125227) do
     t.datetime "updated_at", null: false
     t.boolean "is_holiday", default: true, null: false
     t.boolean "auto_confirm", default: false, null: false
-    t.string "color", default: "", null: false
+    t.string "color", default: "#44c9b3", null: false
     t.index ["company_id"], name: "index_rules_on_company_id"
   end
 
