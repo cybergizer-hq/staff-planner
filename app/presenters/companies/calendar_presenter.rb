@@ -66,7 +66,7 @@ module Companies
 
     def define_rule(employee, day)
       selected_events = events[employee.id].select { |event| event_in_day?(event, day) }
-      selected_events.map { |event| event.rule }
+      selected_events.map(&:rule)
     end
 
     def event_in_day?(event, day)

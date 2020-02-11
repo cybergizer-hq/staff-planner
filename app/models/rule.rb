@@ -13,5 +13,5 @@ class Rule < ApplicationRecord
   validates :is_holiday, inclusion: { in: [true, false] }
   validates :name, presence: true, uniqueness: { scope: :company_id }
   validates :period, presence: true, inclusion: { in: PERIOD_LIST }
-  validates :color, presence: true
+  validates_format_of :color, with: /\A#[0-9A-F]{6}\z/
 end
