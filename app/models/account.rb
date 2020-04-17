@@ -20,8 +20,8 @@ class Account < ApplicationRecord
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |account|
       account.provider = auth.provider
-      account.name = auth.info.name
-      account.surname = auth.info.nickname
+      account.name = account.auth_provider_name(auth)
+      account.surname = account.auth_provider_surname(auth)
       account.uid = auth.uid
       account.email = auth.info.email
       account.password = Devise.friendly_token[0, 20]
@@ -30,9 +30,11 @@ class Account < ApplicationRecord
   end
 
   def auth_provider_avatar(auth)
-    return unless auth.info.image.present?
+    image_url = auth.provider == :alfred ? auth.info.avatar_url : auth.info.image
 
-    downloaded_image = URI.parse(auth.info.image).open
+    return unless image_url.present?
+
+    downloaded_image = URI.parse(image_url).open
 
     avatar.attach(
       io: downloaded_image,
@@ -41,6 +43,14 @@ class Account < ApplicationRecord
     )
   end
   # rubocop: enable Metrics/AbcSize
+
+  def auth_provider_name(auth)
+    auth.provider == :alfred ? auth.info.first_name : auth.info.name
+  end
+
+  def auth_provider_surname(auth)
+    auth.provider == :alfred ? auth.info.last_name : auth.info.nickname
+  end
 
   def full_name
     "#{surname} #{name}"
