@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/cybergizer-hq/omniauth-alfred
+  revision: 9cbda091493b3a68fe7d5136d91199db32741ff5
+  branch: master
+  specs:
+    omniauth-alfred (0.0.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -350,6 +359,7 @@ DEPENDENCIES
   kaminari
   listen (>= 3.0.5, < 3.2)
   oj
+  omniauth-alfred!
   omniauth-github
   pg (>= 0.18, < 2.0)
   pry-byebug
