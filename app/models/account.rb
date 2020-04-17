@@ -25,11 +25,11 @@ class Account < ApplicationRecord
       account.uid = auth.uid
       account.email = auth.info.email
       account.password = Devise.friendly_token[0, 20]
-      account.github_avatar(auth)
+      account.auth_provider_avatar(auth)
     end
   end
 
-  def github_avatar(auth)
+  def auth_provider_avatar(auth)
     return unless auth.info.image.present?
 
     downloaded_image = URI.parse(auth.info.image).open
