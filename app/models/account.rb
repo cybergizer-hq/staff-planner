@@ -10,22 +10,30 @@ class Account < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable,
          :recoverable, :rememberable, :validatable, :omniauthable,
          authentication_keys: [:email]
+
 
   has_one_attached :avatar
 
   # rubocop: disable Metrics/AbcSize
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |account|
-      account.provider = auth.provider
-      account.name = account.auth_provider_name(auth)
-      account.surname = account.auth_provider_surname(auth)
-      account.uid = auth.uid
-      account.email = auth.info.email
-      account.password = Devise.friendly_token[0, 20]
-      account.auth_provider_avatar(auth)
+    if account = find_by_email(auth.info.email)
+      return account if account.uid
+
+      account.update(provider: auth.provider, uid: auth.uid)
+      account
+    else
+      where(provider: auth.provider, uid: auth.uid).first_or_create do |account|
+        account.provider = auth.provider
+        account.name = account.auth_provider_name(auth)
+        account.surname = account.auth_provider_surname(auth)
+        account.uid = auth.uid
+        account.email = auth.info.email
+        account.password = Devise.friendly_token[0, 20]
+        account.auth_provider_avatar(auth)
+      end
     end
   end
 
