@@ -44,7 +44,6 @@ gem 'rubocop', '~> 0.74.0'
 gem 'devise'
 # Authorization
 gem 'cancancan'
-gem 'omniauth-github'
 gem "omniauth-alfred", git: 'https://github.com/cybergizer-hq/omniauth-alfred', branch: 'master'
 gem 'slack-notifier'
 
