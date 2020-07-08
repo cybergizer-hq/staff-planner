@@ -1,0 +1,63 @@
+env:
+  RUBY_VERSION: 2.6
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_DB: postgres
+  TOKEN_CALENDARIFIC: ${{ secrets.TOKEN_CALENDARIFIC }}
+  API_GITHUB: ${{ secrets.API_GITHUB }}
+  SECRET_GITHUB: ${{ secrets.SECRET_GITHUB }}
+
+name: Rails tests
+on: [push,pull_request]
+jobs:
+  rubocop-test:
+    name: Rubocop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+      - name: Install Rubocop
+        run: gem install rubocop
+      - name: Check code
+        run: rubocop
+  rspec-test:
+    name: Rspec
+    needs: rubocop-test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+        - 5432:5432
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+      - name: Install postgres client
+        run: sudo apt-get install libpq-dev
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundler install
+      - name: Create database
+        run: |
+          bundler exec rails db:create RAILS_ENV=test
+          bundler exec rails db:migrate RAILS_ENV=test
+      - name: Check files by Yarn
+        run: yarn install --check-files
+      - name: Webpack compilation
+        run: NODE_ENV=test bundle exec rails webpacker:compile
+      - name: Run tests
+        run: bundle exec rspec
+      - name: Upload coverage results
+        uses: actions/upload-artifact@master
+        if: always()
+        with:
+          name: coverage report
+          path: coverage
