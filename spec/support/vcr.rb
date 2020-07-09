@@ -5,6 +5,6 @@ VCR.configure do |c|
   c.hook_into :webmock
   c.configure_rspec_metadata!
   c.filter_sensitive_data('<SECRET>') do
-    Rails.application.credentials.vcr[:token_calendarific]
+    ENV['TOKEN_CALENDARIFIC']
   end
 end

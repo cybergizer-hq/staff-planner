@@ -7,10 +7,10 @@ RSpec.describe Holidays::CalendarificImport do
   let(:account)  { employee.account }
   let(:company)  { employee.company }
 
-  describe '#call', vcr: { cassette_name: 'good_response' } do
+  describe '#call', vcr: { cassette_name: 'good_response', :record => :new_episodes } do
     context 'with valid params' do
       let(:params) do
-        { year: 2020,
+        { year: 2021,
           country: 'RU' }
       end
 

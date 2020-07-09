@@ -46,6 +46,7 @@ module Companies
     end
 
     # rubocop: disable Metrics/MethodLength
+    # rubocop: disable Metrics/CyclomaticComplexity
     def half_event(day, working_month)
       events.each do |_employee, employee_events|
         employee_events.each do |event|
@@ -59,6 +60,7 @@ module Companies
         end
       end
     end
+    # rubocop: enable Metrics/CyclomaticComplexity
     # rubocop: enable Metrics/MethodLength
     # rubocop: enable Metrics/AbcSize
 
