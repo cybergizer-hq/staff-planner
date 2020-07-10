@@ -48,10 +48,8 @@ jobs:
       - name: Create database
         run: |
           bundler exec rails db:prepare RAILS_ENV=test
-      - name: Check files by Yarn
-        run: yarn install --check-files
-      - name: Webpack compilation
-        run: NODE_ENV=test bundle exec rails webpacker:compile
+      - name: Assets compilation
+        run: NODE_ENV=test bundle exec rails assets:precompile
       - name: Run tests
         run: bundle exec rspec
       - name: Upload coverage results
