@@ -1,5 +1,5 @@
 env:
-  RUBY_VERSION: 2.6
+  RUBY_VERSION: 2.7
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   POSTGRES_DB: postgres
@@ -47,8 +47,7 @@ jobs:
           bundler install
       - name: Create database
         run: |
-          bundler exec rails db:create RAILS_ENV=test
-          bundler exec rails db:migrate RAILS_ENV=test
+          bundler exec rails db:prepare RAILS_ENV=test
       - name: Check files by Yarn
         run: yarn install --check-files
       - name: Webpack compilation
