@@ -17,7 +17,6 @@ class Account < ApplicationRecord
 
   has_one_attached :avatar
 
-  # rubocop: disable Metrics/AbcSize
   def self.from_omniauth(auth)
     if account = find_by_email(auth.info.email)
       return account if account.uid
@@ -50,7 +49,6 @@ class Account < ApplicationRecord
       content_type: downloaded_image.content_type
     )
   end
-  # rubocop: enable Metrics/AbcSize
 
   def auth_provider_name(auth)
     auth.provider == :alfred ? auth.info.first_name : auth.info.name
