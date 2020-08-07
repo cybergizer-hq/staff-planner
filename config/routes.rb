@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq'
 
-  devise_for :accounts, controllers: { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations' }
+  devise_for :accounts, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
   devise_scope :account do
     root to: 'devise/sessions#new'

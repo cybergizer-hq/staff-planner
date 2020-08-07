@@ -12,7 +12,7 @@ class Account < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable,
-         authentication_keys: [:email], omniauth_providers: %i[developer alfred github]
+         authentication_keys: [:email], omniauth_providers: %i[developer alfred]
 
   has_one_attached :avatar
 
