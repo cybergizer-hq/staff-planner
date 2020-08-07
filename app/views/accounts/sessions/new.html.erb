@@ -22,6 +22,9 @@
           <%= link_to account_alfred_omniauth_authorize_path, class: "button is-medium is-blue" do %>
             Sign Up With Alfred
           <% end %>
+          <% if ENV.fetch('SKIP_ALFRED', false) == 'true' %>
+            <%= link_to 'Login as Developer', account_developer_omniauth_callback_path, class: "button is-medium is-info" %>
+          <% end %>
         </div>
       </div>
     <% end %>

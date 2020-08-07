@@ -10,7 +10,6 @@ module Events
       @from, @to = from_to_from_period(params[:start_period], params[:end_period])
     end
 
-    # rubocop: disable Metrics/AbcSize
     def events
       @events = company.events
                        .accessible_by(current_ability)
@@ -20,7 +19,6 @@ module Events
       @events = @events.where(employee_id: params[:employee_id]) if params[:employee_id].present?
       @events
     end
-    # rubocop: enable Metrics/AbcSize
 
     def employees
       company.employees

@@ -6,7 +6,6 @@ module Companies
 
     attr_reader :company, :name, :id, :days, :working_days, :events, :holidays, :current_account_id
 
-    # rubocop: disable Metrics/AbcSize
     def initialize(company, current_account_id, params)
       @company = company
       @days = get_period(params)
@@ -15,7 +14,6 @@ module Companies
       @holidays = Holiday.where(date: days.first..days.last)
       @current_account_id = current_account_id
     end
-    # rubocop: enable Metrics/AbcSize
 
     def employees
       @employees ||= company
@@ -46,7 +44,7 @@ module Companies
     end
 
     # rubocop: disable Metrics/MethodLength
-    # rubocop: disable Metrics/CyclomaticComplexity
+    # rubocop: disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def half_event(day, working_month)
       events.each do |_employee, employee_events|
         employee_events.each do |event|
@@ -60,7 +58,7 @@ module Companies
         end
       end
     end
-    # rubocop: enable Metrics/CyclomaticComplexity
+    # rubocop: enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     # rubocop: enable Metrics/MethodLength
     # rubocop: enable Metrics/AbcSize
 
