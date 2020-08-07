@@ -12,10 +12,11 @@ class Account < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable,
-         authentication_keys: [:email]
+         authentication_keys: [:email], omniauth_providers: %i[developer alfred github]
 
   has_one_attached :avatar
 
+  # rubocop: disable Metrics/AbcSize
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |account|
       account.provider = auth.provider
@@ -27,6 +28,7 @@ class Account < ApplicationRecord
       account.auth_provider_avatar(auth)
     end
   end
+  # rubocop: enable Metrics/AbcSize
 
   def auth_provider_avatar(auth)
     image_url = auth.provider == :alfred ? auth.info.avatar_url : auth.info.image
